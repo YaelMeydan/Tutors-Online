@@ -1,0 +1,20 @@
+.button {
+    background: var(--accent-500);
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: 600;
+    line-height: 1;
+    font-size: 0.8rem;
+    border-radius: 2rem;
+    color: rgb(177, 35, 35);
+    padding: 0.5rem 1rem;
+
+    &:hover {
+        background: var(--accent-400);
+    }
+
+    &:active {
+        background: var(--accent-600);
+    }
+}

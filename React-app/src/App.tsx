@@ -1,0 +1,53 @@
+import { Link, Outlet, useNavigate } from "react-router";
+import { clearToken, getToken } from "./models/apiClient";
+import { PrimaryButton } from "./components/PrimaryButton";
+
+//import styles from "./App.module.scss";
+
+export function App() {
+  return (
+    <>
+      <Nav />
+      <Outlet />
+    </>
+  );
+}
+
+export function Nav() {
+  const navigate = useNavigate();
+  return(
+    <article  >
+      <nav>
+        <menu>
+          <li><Link to=""></Link></li> 
+        </menu>
+      </nav>
+      <article>
+        <p>Hello {getUserName()}</p>
+        <PrimaryButton onClick={() => {
+          clearToken();
+          navigate("/login");
+        }}>Logout</PrimaryButton>
+      </article>
+    </article>
+  );
+}
+
+function getUserName() {
+  const token = getToken();
+
+  if (!token) {
+    return "";
+  }
+
+  const [, encodedPayload] = token.split(".");
+  const rawPayload = atob(encodedPayload);
+
+  try {
+    const payload = JSON.parse(rawPayload);
+
+    return payload.userName;
+  } catch {
+    return "";
+  }
+}

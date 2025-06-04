@@ -1,0 +1,15 @@
+.formField {
+    display: flex;
+    flex-direction: column;
+
+    label {
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+    input {
+        border: 1px solid currentColor;
+        border-radius: 8px;
+        padding: 0.2rem 0.3rem;
+    }
+}
