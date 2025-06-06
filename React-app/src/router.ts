@@ -6,7 +6,7 @@ import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
 import { NotFound } from "./pages/NotFound";
 import { getToken } from "./models/apiClient";
-import { StudentsPosts } from "./models/studentrequest"; //add to import -   , StudentsPostsBySubject
+import { StudentsPosts } from "./models/studentRequest"; //add to import -   , StudentsPostsBySubject
 import { ShowAllStudentsPosts } from "./pages/StudentsPosts";
 import { HandleAuthorizationError } from "./HandleAuthorizationError";
 

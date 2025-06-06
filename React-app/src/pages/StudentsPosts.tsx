@@ -1,6 +1,6 @@
 import { Link, useLoaderData } from "react-router";
 import { Main } from "../components/Main";
-import { timestampFormater, type AllStudentPosts } from "../models/studentrequest";
+import { timestampFormater, type AllStudentPosts } from "../models/studentRequest";
 
 export function ShowAllStudentsPosts(){
     const studentsPosts = useLoaderData<AllStudentPosts>();
