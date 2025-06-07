@@ -7,7 +7,7 @@ import { router as studentsPostsRouter } from "./routers/studentsPosts";
 
 export const app = express();
 
-app.use(cors({ origin: 'https://yaelmeydan.github.io/Tutors-Online/' }));
+app.use(cors({ origin: 'https://yaelmeydan.github.io' }));
 
 app.use((req, _, next) => {
     console.log(new Date(), req.method, req.url);
