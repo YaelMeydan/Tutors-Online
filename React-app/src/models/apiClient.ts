@@ -3,7 +3,7 @@ import axios from "axios";
 export const tokenKeyName = "token";
 
 export const apiClient = axios.create({
-    baseURL: 'https://tutors-online.onrender.com/studentsPosts',
+    baseURL: 'https://tutors-online.onrender.com/index.ts',
 });
 
 apiClient.interceptors.request.use((config) => {
