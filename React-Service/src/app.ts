@@ -9,7 +9,7 @@ export const app = express();
 
 app.use(json());
 
-app.use(cors({ origin: 'https://yaelmeydan.github.io' }));
+app.use(cors({ origin: 'https://yaelmeydan.github.io/Tutors-Online' }));
 
 app.use((req, _, next) => {
     console.log(new Date(), req.method, req.url);
