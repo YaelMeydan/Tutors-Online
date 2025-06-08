@@ -9,14 +9,14 @@ export const app = express();
 
 app.use(json());
 
-app.use(cors({ origin: 'https://yaelmeydan.github.io' }));
+app.use(cors());
 
 app.use((req, _, next) => {
     console.log(new Date(), req.method, req.url);
     next();
 });
 
-app.use(express.static("public"));
+app.use(express.static("React-app"));
 
 useAuth(app);
 
