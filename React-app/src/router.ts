@@ -32,7 +32,7 @@ export const router = createBrowserRouter([
         },
         ErrorBoundary: HandleAuthorizationError,
         children: [
-            { index: true, loader: () => redirect("/student-posts") },
+            { index: true, loader: () => redirect("/students-posts") },
             { path: "*", Component: NotFound },
             {
                 path: "/students-posts",
