@@ -16,7 +16,7 @@ app.use((req, _, next) => {
     next();
 });
 
-app.use(express.static("React-app"));
+app.use(express.static("public"));
 
 useAuth(app);
 
