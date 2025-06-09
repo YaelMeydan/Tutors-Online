@@ -6,7 +6,8 @@ import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
 import { NotFound } from "./pages/NotFound";
 import { getToken } from "./models/apiClient";
-import { StudentsPosts } from "./models/studentRequest"; //add to import -   , StudentsPostsBySubject
+import { StudentsPosts , StudentsPostsBySubject, NewStudentPost, type NewStudentRequest } from "./models/studentRequest"; 
+import { NewStudentForm } from "./pages/NewStudentForm";
 import { ShowAllStudentsPosts } from "./pages/StudentsPosts";
 import { HandleAuthorizationError } from "./HandleAuthorizationError";
 
@@ -31,23 +32,33 @@ export const router = createBrowserRouter([
         },
         ErrorBoundary: HandleAuthorizationError,
         children: [
-            { index: true, loader: () => redirect("/StudentsPosts") },
+            { index: true, loader: () => redirect("/student-posts") },
             { path: "*", Component: NotFound },
             {
-                path: "/StudentsPosts",
+                path: "/students-posts",
                 Component: ShowAllStudentsPosts,
                 loader() {
                     return StudentsPosts();
                 },
             },
-        //  {
-        //      path: "/StudentsPosts/:subject",
-        //      Component: ,
-        //      loader({ params }) {
-        //         return StudentsPostsBySubject(params.subject as string);
-        //     },
-        //  },           
-           ],
+            {
+                path: "/students-posts/:subject",
+                Component: ShowAllStudentsPosts ,
+                loader({ params }) {
+                   return StudentsPostsBySubject(params.subject as string);
+                },
+            },
+             {
+                path: "/new-student-form",
+                Component: NewStudentForm,
+                loader() {
+                    // Pass an appropriate argument of type NewStudentRequest if needed, or remove the argument if not required
+                    // Example with an empty object (replace with actual data as needed):
+                    // return NewStudentPost({} as NewStudentRequest);
+                    return NewStudentPost({} as NewStudentRequest);
+                },
+            },           
+          ],
     },
 ]);
 

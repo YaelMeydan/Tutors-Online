@@ -64,8 +64,8 @@ function SetPasswordField() {
                 onInput={(e) => setPassword(e.currentTarget.value)}
                 value={password}
             />
-             <p>Password must be 8 characters long and contain</p>
-             <p>at least: 1 lowercase letter, 1 uppercase letter and 1 digit</p>
+             <p>Password must be 8 characters long and contain at least:</p>
+             <p>1 lowercase letter, 1 uppercase letter and 1 digit</p>
             
         </>
     );

@@ -7,6 +7,15 @@
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
 
+  //https://www.realtimecolors.com/?colors=07090a-aecad6-ccb1bf-73b489-b09286&fonts=Inter-Inter
+
+   $text: #07090a;
+   $background: #aecad6;
+   $primary: #ccb1bf;
+   $secondary: #73b489;
+   $accent: #b09286;
+  
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -66,3 +75,5 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+

@@ -5,21 +5,27 @@ export type StudentRequest = {
     name: string,
     subject: string,
     level?: string,
-    contact?: string,
+    contact: string,
     createdAt: string,
 };
 
-export type AllStudentPosts = Omit<StudentRequest, "contact">[];
-
+export type AllStudentPosts = StudentRequest[];
 export async function StudentsPosts(): Promise<AllStudentPosts> {
-    const res = await apiClient.get("/studentsPosts");
+    const res = await apiClient.get("/students-posts");
 
    return res.data;
 }
 
-export async function StudentsPostsBySubject(subject: string): Promise<StudentRequest> {
-    const res = await apiClient.get(`/studentsPosts/${subject}`);
+export type StudentsBySubject = StudentRequest[];
+export async function StudentsPostsBySubject(subject: string): Promise<StudentsBySubject> {
+    const res = await apiClient.get(`/students-posts/${subject}`);
 
+    return res.data;
+}
+
+export type NewStudentRequest = Omit<StudentRequest, "_id" >[];
+export async function NewStudentPost(studentRequest: NewStudentRequest): Promise<StudentRequest> {
+    const res = await apiClient.post("/new-student-form", studentRequest);
     return res.data;
 }
 
