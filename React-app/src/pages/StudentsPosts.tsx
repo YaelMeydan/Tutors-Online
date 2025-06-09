@@ -11,7 +11,7 @@ export function ShowAllStudentsPosts(){
     return(
         <Main>
             <h1>All Students Posts</h1>
-            <div><Link to ="/new-student-form">Add a new student request ➕</Link></div>
+            <div><Link to ="/new-student-form/">Add a new student request ➕</Link></div>
             <div>
             <Input id="search" type="search" name="Type the required subject to search:" label="search"/>
             <PrimaryButton onClick= {() =>{
