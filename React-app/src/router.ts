@@ -52,9 +52,6 @@ export const router = createBrowserRouter([
                 path: "/new-student-form",
                 Component: NewStudentForm,
                 loader() {
-                    // Pass an appropriate argument of type NewStudentRequest if needed, or remove the argument if not required
-                    // Example with an empty object (replace with actual data as needed):
-                    // return NewStudentPost({} as NewStudentRequest);
                     return NewStudentPost({} as NewStudentRequest);
                 },
             },           
