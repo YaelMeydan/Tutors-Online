@@ -11,21 +11,21 @@ export type StudentRequest = {
 
 export type AllStudentPosts = StudentRequest[];
 export async function StudentsPosts(): Promise<AllStudentPosts> {
-    const res = await apiClient.get("/students-posts");
+    const res = await apiClient.get("/students");
 
    return res.data;
 }
 
 export type StudentsBySubject = StudentRequest[];
 export async function StudentsPostsBySubject(subject: string): Promise<StudentsBySubject> {
-    const res = await apiClient.get(`/students-posts/${subject}`);
+    const res = await apiClient.get(`/students/${subject}`);
 
     return res.data;
 }
 
 export type NewStudentRequest = Omit<StudentRequest, "_id" >[];
 export async function NewStudentPost(studentRequest: NewStudentRequest): Promise<StudentRequest> {
-    const res = await apiClient.post("/new-student-form", studentRequest);
+    const res = await apiClient.post("/students", studentRequest);
     return res.data;
 }
 

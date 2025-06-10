@@ -2,7 +2,7 @@ import express from "express";
 import { json } from "body-parser";
 import cors from "cors";
 import { useAuth } from "./auth";
-import { router as studentspostsRouter } from "./routers/students-posts";
+import { router as studentsRouter } from "./routers/students";
 
 
 export const app = express();
@@ -20,5 +20,5 @@ app.use(express.static("public"));
 
 useAuth(app);
 
-app.use("/students-posts", studentspostsRouter);
+app.use("/students", studentsRouter);
 

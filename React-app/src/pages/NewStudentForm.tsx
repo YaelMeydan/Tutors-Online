@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import { type StudentRequest } from "../models/studentRequest";
 import { Main } from "../components/Main";
 import { Input } from "../components/Input";
@@ -22,7 +23,7 @@ export function NewStudentForm() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            await apiClient.post("/new-student-form", formData as StudentRequest);
+            await apiClient.post("/students", formData as StudentRequest);
             navigate("/students-posts");
         } catch (err) {
             console.error(err);

@@ -3,19 +3,36 @@ import { Main } from "../components/Main";
 import { timestampFormater, type  AllStudentPosts , type StudentsBySubject} from "../models/studentRequest";
 import { Input } from "../components/Input";
 import { PrimaryButton } from "../components/PrimaryButton";
+import { apiClient } from "../models/apiClient";
 
 export function ShowAllStudentsPosts(){
     const studentsPosts = useLoaderData<AllStudentPosts>();
-    const studentsPostsSubjects = useLoaderData<StudentsBySubject>()
+    let studentsPostsSubjects = useLoaderData<StudentsBySubject>()
 
     return(
         <Main>
             <h1>All Students Posts</h1>
-            <div><Link to ="/new-student-form/">Add a new student request ➕</Link></div>
+            <div><Link to ="/new-student-form">Add a new student request ➕</Link></div>
             <div>
             <Input id="search" type="search" name="Type the required subject to search:" label="search"/>
-            <PrimaryButton onClick= {() =>{
-            <StudentsBySubject studentsPostsSubjects={studentsPostsSubjects}/>
+            <PrimaryButton onClick= {async () =>{
+                try {
+                    const subject = document.querySelector<HTMLInputElement>("#search")?.value;
+                    await apiClient.get((`/students/${subject}`), {
+                        params: {
+                            subject: subject,
+                        },
+                    }).then((res) => {
+                       
+                        studentsPostsSubjects = res.data;
+
+                    });
+
+                     <StudentsBySubject studentsPostsSubjects={studentsPostsSubjects}/>
+                     
+                } catch (err) {
+                    console.error(err);
+                }
             }}>🔎</PrimaryButton>
             </div>
             <AllStudentPosts studentsPosts={studentsPosts}/>
