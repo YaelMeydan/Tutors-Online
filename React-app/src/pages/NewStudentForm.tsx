@@ -18,7 +18,13 @@ export function NewStudentForm() {
         studentRequest.level = formEntries.level as string;
         studentRequest.contact = formEntries.contact as string;
 
-
+        try {
+            await apiClient.post("/students", studentRequest as StudentRequest);
+            alert("Your request has been submitted successfully!");
+            navigate("/students-posts");
+        } catch (err) {
+            console.error(err);
+        }
     }
 
     return(
@@ -42,23 +48,14 @@ export function NewStudentForm() {
                     id="level"
                     label="Level (optional)"
                     name="level"
-                />
+                />    
                 <Input
                     id="contact"
-                    label="Contact Information"
+                    label="Contact"
                     name="contact"
                     required
                 />
-                <PrimaryButton onClick={async () => {
-                try {
-                    await apiClient.post("/students", studentRequest as StudentRequest);
-
-                    alert("Your request has been submitted successfully!");                 
-                    navigate("/students-posts");
-                } catch (err) {
-                    console.error(err);
-                }
-            }}>Submit Request</PrimaryButton>
+            <PrimaryButton>Submit Request</PrimaryButton>
             </form>
 
         </Main>
