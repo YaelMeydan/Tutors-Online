@@ -35,14 +35,14 @@ export const router = createBrowserRouter([
             { index: true, loader: () => redirect("/students-posts") },
             { path: "*", Component: NotFound },
             {
-                path: "/students",
+                path: "/students-posts",
                 Component: ShowAllStudentsPosts,
                 loader() {
                     return StudentsPosts();
                 },
             },
             {
-                path: "/students/:subject",
+                path: "/students-posts/:subject",
                 Component: ShowAllStudentsPosts ,
                 loader({ params }) {
                    return StudentsPostsBySubject(params.subject as string);
