@@ -61,13 +61,8 @@ export function NewStudentForm() {
                 <PrimaryButton onClick={async () => {
                 try {
                     await apiClient.post("/students", studentRequest);
-                    setStudentRequest({
-                        name: "",
-                        subject: "",
-                        level: "",
-                        contact: "" 
-                });
-                    
+
+                    alert("Your request has been submitted successfully!");                 
                     navigate("/students-posts");
                 } catch (err) {
                     console.error(err);
