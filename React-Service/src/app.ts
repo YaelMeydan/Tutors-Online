@@ -7,14 +7,14 @@ import { router as studentsRouter } from "./routers/students";
 
 export const app = express();
 
-app.use(json());
-
 app.use(cors());
 
 app.use((req, _, next) => {
     console.log(new Date(), req.method, req.url);
     next();
 });
+
+app.use(json());
 
 app.use(express.static("public"));
 
