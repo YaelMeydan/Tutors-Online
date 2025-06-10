@@ -55,4 +55,3 @@ exports.router.get("/:subject", (req, res) => __awaiter(void 0, void 0, void 0, 
         res.end();
     }
 }));
-exports.router.get;
