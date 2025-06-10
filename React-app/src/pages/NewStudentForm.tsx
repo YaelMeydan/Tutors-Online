@@ -10,8 +10,9 @@ export function NewStudentForm() {
     const navigate = useNavigate();
     const studentRequest ={} as StudentRequest;
 
-    async function Submit(formData: FormData) {
-        const formEntries = Object.fromEntries(formData);
+    async function Submit(e: React.FormEvent) {
+        e.preventDefault();
+        const formEntries = Object.fromEntries(new FormData(e.currentTarget as HTMLFormElement));
         studentRequest.name = formEntries.name as string;
         studentRequest.subject = formEntries.subject as string;
         studentRequest.level = formEntries.level as string;
@@ -23,7 +24,7 @@ export function NewStudentForm() {
     return(
     <Main>
          <h1>New Student Request</h1>
-            <form action={Submit}>
+            <form onSubmit={Submit}>
                 <Input
                     id="name"
                     label="Name"
@@ -50,7 +51,7 @@ export function NewStudentForm() {
                 />
                 <PrimaryButton onClick={async () => {
                 try {
-                    await apiClient.post("/students", studentRequest);
+                    await apiClient.post("/students", studentRequest as StudentRequest);
 
                     alert("Your request has been submitted successfully!");                 
                     navigate("/students-posts");
