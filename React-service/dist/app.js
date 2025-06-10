@@ -10,12 +10,12 @@ const cors_1 = __importDefault(require("cors"));
 const auth_1 = require("./auth");
 const students_1 = require("./routers/students");
 exports.app = (0, express_1.default)();
-exports.app.use((0, body_parser_1.json)());
 exports.app.use((0, cors_1.default)());
 exports.app.use((req, _, next) => {
     console.log(new Date(), req.method, req.url);
     next();
 });
+exports.app.use((0, body_parser_1.json)());
 exports.app.use(express_1.default.static("public"));
 (0, auth_1.useAuth)(exports.app);
 exports.app.use("/students", students_1.router);

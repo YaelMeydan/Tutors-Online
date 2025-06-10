@@ -25,7 +25,7 @@ export function NewStudentForm() {
 
     return(
     <Main>
-
+         <h1>New Student Request</h1>
             <form >
                 <Input
                     id="name"
@@ -61,6 +61,13 @@ export function NewStudentForm() {
                 <PrimaryButton onClick={async () => {
                 try {
                     await apiClient.post("/students", studentRequest);
+                    setStudentRequest({
+                        name: "",
+                        subject: "",
+                        level: "",
+                        contact: "" 
+                });
+                    
                     navigate("/students-posts");
                 } catch (err) {
                     console.error(err);

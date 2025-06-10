@@ -13,13 +13,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 require("dotenv/config");
-const dotenv_1 = __importDefault(require("dotenv"));
+//import dotenv from "dotenv";
 const http_1 = require("http");
 const mongoose_1 = __importDefault(require("mongoose"));
 const app_1 = require("./app");
 const server = (0, http_1.createServer)(app_1.app);
 const port = process.env.PORT || 8080;
-dotenv_1.default.config({ path: "../.env" });
+//dotenv.config({ path: "../.env" });
 function init() {
     return __awaiter(this, void 0, void 0, function* () {
         yield mongoose_1.default.connect(process.env.CONNECTION_STRING, {
