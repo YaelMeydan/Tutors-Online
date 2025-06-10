@@ -6,7 +6,7 @@ import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
 import { NotFound } from "./pages/NotFound";
 import { getToken } from "./models/apiClient";
-import { StudentsPosts , StudentsPostsBySubject, NewStudentPost, type NewStudentRequest } from "./models/studentRequest"; 
+import { StudentsPosts , StudentsPostsBySubject, NewStudentPost} from "./models/studentRequest"; 
 import { NewStudentForm } from "./pages/NewStudentForm";
 import { ShowAllStudentsPosts } from "./pages/StudentsPosts";
 import { HandleAuthorizationError } from "./HandleAuthorizationError";
@@ -52,7 +52,7 @@ export const router = createBrowserRouter([
                 path: "/new-student-form",
                 Component: NewStudentForm,
                 loader() {
-                    return NewStudentPost({} as NewStudentRequest);
+                    return NewStudentPost();
                 },
             },           
           ],

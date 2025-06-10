@@ -23,9 +23,10 @@ export async function StudentsPostsBySubject(subject: string): Promise<StudentsB
     return res.data;
 }
 
-export type NewStudentRequest = Omit<StudentRequest, "_id" >[];
-export async function NewStudentPost(studentRequest: NewStudentRequest): Promise<StudentRequest> {
-    const res = await apiClient.post("/students", studentRequest);
+export type NewStudentRequest = StudentRequest[];
+export async function NewStudentPost(): Promise<NewStudentRequest> {
+    const res = await apiClient.get("/students")
+   
     return res.data;
 }
 
