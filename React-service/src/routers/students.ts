@@ -1,19 +1,30 @@
 import { Router } from "express";
 import { StudentRequest } from "../models/studentRequest";
-//import { Types } from "mongoose";
+// Assuming your auth middleware adds user info to req.user
+import { AuthenticatedRequest } from "../auth"; // You might need to define this type
 
 export const router = Router();
 
-router.post("/", async (req, res) => {
+// Update the POST route to include the createdBy user ID
+router.post("/", async (req: AuthenticatedRequest, res) => { // Use AuthenticatedRequest type
     try {
-        await StudentRequest.create(req.body);
+        // Ensure req.user exists and has an _id
+        if (!req.user || !req.user.sub) {
+            res.status(401).send("User not authenticated.");
+            return;
+        }
 
-        res.status(201);
-        res.end();
+        const newStudentRequest = {
+            ...req.body,
+            createdBy: req.user.sub // Add the ID of the logged-in user
+        };
+
+        await StudentRequest.create(newStudentRequest);
+
+        res.status(201).end();
     } catch (err) {
-        console.error(err);
-        res.status(500);
-        res.end();
+        console.error("Error creating student request:", err);
+        res.status(500).end();
     }
 });
 
@@ -51,26 +62,64 @@ router.get("/", async (req, res) => {// Changed _ to req to access query paramet
     }
 });
 
-// The GET /:subject route is now redundant for the client-side search
-// you implemented, as the client uses query parameters. You can keep
-// it if it's used elsewhere or remove it if not needed.
-// router.get("/:subject", async (req, res) => {
-//     try {
-//         const studentrequest = await StudentRequest.find({
-//             subject: req.params.subject,
-//         });
-//         if (!studentrequest || studentrequest.length === 0) {
-//             res.status(404);
-//             res.send(`No posts found for subject ${req.params.subject}`);
-//             return;
-//         }
+// Add DELETE route for a specific student request
+router.delete("/:id", async (req: AuthenticatedRequest, res) => { // Use AuthenticatedRequest type
+    try {
+        // Ensure req.user exists and has an _id
+        if (!req.user || !req.user.sub) {
+            res.status(401).send("User not authenticated.");
+            return;
+        }
 
-//         res.json(studentrequest);
+        const requestId = req.params.id;
 
-//     } catch (err) {
-//         console.error(err);
-//         res.status(500);
-//         res.end();
-//     }
-// });
+        // Find the request and check if the logged-in user is the creator
+        const studentRequest = await StudentRequest.findOne({ _id: requestId, createdBy: req.user.sub });
+
+        if (!studentRequest) {
+            // If not found or user is not the creator, return 404 or 403
+            res.status(404).send("Student request not found or you do not have permission to delete it.");
+            return;
+        }
+
+        await StudentRequest.deleteOne({ _id: requestId });
+
+        res.status(200).end(); // Or 204 No Content
+    } catch (err) {
+        console.error("Error deleting student request:", err);
+        res.status(500).end();
+    }
+});
+
+// Add PUT route for editing a specific student request
+router.put("/:id", async (req: AuthenticatedRequest, res) => { // Use AuthenticatedRequest type
+    try {
+        // Ensure req.user exists and has an _id
+        if (!req.user || !req.user.sub) {
+            res.status(401).send("User not authenticated.");
+            return;
+        }
+
+        const requestId = req.params.id;
+        const updatedData = req.body;
+
+        // Find the request and check if the logged-in user is the creator
+        const studentRequest = await StudentRequest.findOneAndUpdate(
+            { _id: requestId, createdBy: req.user.sub },
+            updatedData,
+            { new: true } // Return the updated document
+        );
+
+        if (!studentRequest) {
+             // If not found or user is not the creator, return 404 or 403
+            res.status(404).send("Student request not found or you do not have permission to edit it.");
+            return;
+        }
+
+        res.status(200).json(studentRequest);
+    } catch (err) {
+        console.error("Error editing student request:", err);
+        res.status(500).end();
+    }
+});
 

@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 
 const schema = new Schema({
     subject: {
@@ -14,9 +14,12 @@ const schema = new Schema({
     },
     contact:{
         type: String,
-        //required: true,
-        //unique: true,
+        required: true,
     },
+    createdBy: {
+        type: mongoose.Schema.Types.ObjectId, ref: 'User', 
+        required: true 
+},
 
 }, { timestamps: true });
 

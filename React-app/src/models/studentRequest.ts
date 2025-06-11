@@ -7,6 +7,7 @@ export type StudentRequest = {
     level?: string,
     contact: string,
     createdAt: string,
+    createdBy: string; 
 };
 
 export type AllStudentPosts = StudentRequest[];

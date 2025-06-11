@@ -1,10 +1,10 @@
-import { Link, useLoaderData } from "react-router";
+import { Link, useLoaderData, useNavigate } from "react-router"; // Import useNavigate
 import { Main } from "../components/Main";
-import { timestampFormater, type  AllStudentPosts } from "../models/studentRequest";
+import { timestampFormater, type  AllStudentPosts, type StudentRequest } from "../models/studentRequest"; // Import StudentRequest type
 import { Input } from "../components/Input";
 import { PrimaryButton } from "../components/PrimaryButton";
-import { apiClient } from "../models/apiClient";
-import { useState, useEffect } from "react"; // Import useState and useEffect
+import { apiClient, getCurrentUserId } from "../models/apiClient"; // Import getCurrentUserId
+import { useState, useEffect } from "react";
 
 export function ShowAllStudentsPosts(){
     // Get initial data from the loader
@@ -57,46 +57,65 @@ export function ShowAllStudentsPosts(){
                 <PrimaryButton onClick={handleSearch}>Search🔎</PrimaryButton>
             </div>
             {/* Render the list using the state variable that gets updated by the search */}
-            <AllStudentPosts studentsPosts={displayedPosts}/>
-            {/* Remove the incorrect rendering of StudentsBySubject here */}
-            {/* <StudentsBySubject studentsPostsSubjects={studentsPostsSubjects}/> */}
+            {/* Pass the current user ID to AllStudentPosts */}
+            <AllStudentPosts studentsPosts={displayedPosts} currentUserId={getCurrentUserId()}/>
         </Main>
     );
 }
 
-type AllStudentPostsProps = {studentsPosts: AllStudentPosts};
-function AllStudentPosts({studentsPosts}: AllStudentPostsProps) {
-    if (!studentsPosts || studentsPosts.length === 0) { // Added check for null/undefined
+type AllStudentPostsProps = {
+    studentsPosts: AllStudentPosts;
+    currentUserId: string | null; // Add currentUserId prop
+};
+
+function AllStudentPosts({studentsPosts, currentUserId}: AllStudentPostsProps) { // Receive currentUserId
+    if (!studentsPosts || studentsPosts.length === 0) {
         return (<p>No student requests found.</p>);
     }
     return (
         <ul>
             {studentsPosts
                 .sort((a, b) => new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf())
-                .map((studentRequest) => <li key={studentRequest._id}><StudentPost {...studentRequest} /></li>)}
+                .map((studentRequest) =>
+                    <li key={studentRequest._id}>
+                        {/* Pass currentUserId to StudentPost */}
+                        <StudentPost {...studentRequest} currentUserId={currentUserId} />
+                    </li>
+                )}
         </ul>
     );
 }
 
-// The StudentsBySubject component seems redundant if AllStudentPosts is used for filtered results.
-// You can keep it if it serves a different purpose or remove it if not needed.
-// type StudentsBySubjectProps = {studentsPostsSubjects: StudentsBySubject};
-// export function StudentsBySubject({studentsPostsSubjects}: StudentsBySubjectProps) {
-//     if (studentsPostsSubjects.length === 0) {
-//         return (<p>No students requests found for this subject.</p>);
-//     }
-//     return (
-//         <ul>
-//             {studentsPostsSubjects
-//                 .sort((a, b) => new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf())
-//                 .map((studentRequest) => <li key={studentRequest._id}><StudentPost {...studentRequest} /></li>)}
-//         </ul>
-//     );
-// }
+type StudentPostProps =  StudentRequest & { // Use StudentRequest type and add currentUserId
+    currentUserId: string | null;
+};
 
-type StudentPostProps =  AllStudentPosts[number];
-export function StudentPost({ createdAt, name, level, subject, contact } :StudentPostProps) {
+export function StudentPost({ _id, createdAt, name, level, subject, contact, createdBy, currentUserId } :StudentPostProps) { // Receive createdBy and currentUserId
      const timestamp = new Date(createdAt);
+     const navigate = useNavigate(); // Use useNavigate for editing
+
+     const isOwner = currentUserId && createdBy === currentUserId;
+
+     const handleDelete = async () => {
+         if (window.confirm("Are you sure you want to delete this request?")) {
+             try {
+                 await apiClient.delete(`/students/${_id}`);
+                 // Optionally, update the UI by refetching or removing the item from state
+                 alert("Request deleted successfully!");
+                 // A simple way to refresh is to navigate to the same page
+                 navigate(0); // This forces a page reload and loader refetch
+             } catch (error) {
+                 console.error("Error deleting request:", error);
+                 alert("Failed to delete request.");
+             }
+         }
+     };
+
+     const handleEdit = () => {
+         // Navigate to an edit page/form
+         navigate(`/students/${_id}/edit`);
+     };
+
 
      return(
         <article>
@@ -105,6 +124,12 @@ export function StudentPost({ createdAt, name, level, subject, contact } :Studen
             <time dateTime={timestamp.toString()}>{timestampFormater.format(timestamp)}</time>
             <p>{name}</p>
             <p>{contact}</p>
+            {isOwner && ( // Conditionally render buttons if the current user is the owner
+                <div>
+                    <PrimaryButton onClick={handleEdit}>Edit</PrimaryButton>
+                    <PrimaryButton onClick={handleDelete}>Delete</PrimaryButton>
+                </div>
+            )}
         </article>
      );
 }
