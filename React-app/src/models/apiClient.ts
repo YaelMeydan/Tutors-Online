@@ -1,4 +1,5 @@
 import axios from "axios";
+import { jwtDecode } from "jwt-decode"; // You might need to install jwt-decode: npm install jwt-decode @types/jwt-decode
 
 export const tokenKeyName = "token";
 
@@ -27,4 +28,26 @@ export function setToken(token: string) {
 
 export function clearToken() {
     sessionStorage.removeItem(tokenKeyName);
+}
+
+// Function to get the current user's ID from the token
+export function getCurrentUserId(): string | null {
+    const token = getToken();
+    if (!token) {
+        return null;
+    }
+    try {
+        interface DecodedToken {
+            sub?: string; // Look for the 'sub' claim
+            userName?: string; // Also include userName if needed elsewhere
+            [key: string]: unknown;
+        }
+        // Specify the DecodedToken type for jwtDecode
+        const decodedToken: DecodedToken = jwtDecode<DecodedToken>(token);
+        // Return the 'sub' claim, or null if not present
+        return decodedToken.sub || null;
+    } catch (error) {
+        console.error("Error decoding token:", error);
+        return null;
+    }
 }
