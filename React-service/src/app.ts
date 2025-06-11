@@ -22,5 +22,5 @@ app.use(express.static("public"));
 useAuth(app);
 
 app.use("/students", studentsRouter);
-app.use("/teachers", teachersRouter); // Use the teachers router
+app.use("/teachers", teachersRouter);
 

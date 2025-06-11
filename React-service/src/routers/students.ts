@@ -4,10 +4,8 @@ import { AuthenticatedRequest } from "../auth";
 
 export const router = Router();
 
-// Update the POST route to include the createdBy user ID
-router.post("/", async (req: AuthenticatedRequest, res) => { // Use AuthenticatedRequest type
+router.post("/", async (req: AuthenticatedRequest, res) => { 
     try {
-        // Ensure req.user exists and has an _id
         if (!req.user || !req.user.sub) {
             res.status(401).send("User not authenticated.");
             return;
@@ -15,7 +13,7 @@ router.post("/", async (req: AuthenticatedRequest, res) => { // Use Authenticate
 
         const newStudentRequest = {
             ...req.body,
-            createdBy: req.user.sub // Add the ID of the logged-in user
+            createdBy: req.user.sub 
         };
 
         await StudentRequest.create(newStudentRequest);
@@ -27,44 +25,32 @@ router.post("/", async (req: AuthenticatedRequest, res) => { // Use Authenticate
     }
 });
 
-router.get("/", async (req, res) => {// Changed _ to req to access query parameters
-    console.log("GET /students route called"); 
+router.get("/", async (req, res) => {
     
     try {
-        const subject = req.query.subject as string; // Get the subject from query parameters
-        console.log("Received query parameter 'subject':", subject); // Log the received subject
+        const subject = req.query.subject as string; 
         let studentsPosts;
 
         if (subject) {
-            console.log("Filtering by subject:", subject); // Log when filtering is applied
-            // If subject query parameter exists, filter by subject using case-insensitive regex
             studentsPosts = await StudentRequest.find({ subject: new RegExp(subject, 'i') });
         } else {
-            console.log("No subject query parameter, returning all students."); // Log when returning all
-            // Otherwise, return all students
             studentsPosts = await StudentRequest.find();
         }
 
         if (!studentsPosts || studentsPosts.length === 0) {
-             console.log("No student posts found for the query."); // Log if no results
-             // It's better to return an empty array with 200 OK for no results
-             // rather than 404, as the request itself was successful.
              res.status(200).json([]);
              return;
         }
 
-        console.log(`Found ${studentsPosts.length} student posts.`); // Log the number of results
         res.json(studentsPosts);
     } catch (err) {
-        console.error("Error in GET /students route:", err); // Log specific error location
-        res.status(500).end(); // Added .end() for consistency
+        console.error("Error in GET /students route:", err); 
+        res.status(500).end(); 
     }
 });
 
-// Add GET route for a specific student request by ID
 router.get("/:id", async (req: AuthenticatedRequest, res) => {
     try {
-        // Ensure req.user exists and has a 'sub' property
         if (!req.user || !req.user.sub) {
             res.status(401).send("User not authenticated.");
             return;
@@ -72,11 +58,9 @@ router.get("/:id", async (req: AuthenticatedRequest, res) => {
 
         const requestId = req.params.id;
 
-        // Find the request by ID and ensure the logged-in user is the creator
         const studentRequest = await StudentRequest.findOne({ _id: requestId, createdBy: req.user.sub });
 
         if (!studentRequest) {
-            // If not found or user is not the creator, return 404 or 403
             res.status(404).send("Student request not found or you do not have permission to view/edit it.");
             return;
         }
@@ -84,7 +68,6 @@ router.get("/:id", async (req: AuthenticatedRequest, res) => {
         res.status(200).json(studentRequest);
     } catch (err) {
         console.error("Error in GET /students/:id route:", err);
-        // Check if the error is a CastError (e.g., invalid ObjectId format)
         if (err instanceof Error && err.name === 'CastError') {
              res.status(400).send("Invalid student request ID format.");
         } else {
@@ -93,10 +76,8 @@ router.get("/:id", async (req: AuthenticatedRequest, res) => {
     }
 });
 
-// Add DELETE route for a specific student request
-router.delete("/:id", async (req: AuthenticatedRequest, res) => { // Use AuthenticatedRequest type
+router.delete("/:id", async (req: AuthenticatedRequest, res) => { 
     try {
-        // Ensure req.user exists and has an _id
         if (!req.user || !req.user.sub) {
             res.status(401).send("User not authenticated.");
             return;
@@ -104,28 +85,24 @@ router.delete("/:id", async (req: AuthenticatedRequest, res) => { // Use Authent
 
         const requestId = req.params.id;
 
-        // Find the request and check if the logged-in user is the creator
         const studentRequest = await StudentRequest.findOne({ _id: requestId, createdBy: req.user.sub });
 
         if (!studentRequest) {
-            // If not found or user is not the creator, return 404 or 403
             res.status(404).send("Student request not found or you do not have permission to delete it.");
             return;
         }
 
         await StudentRequest.deleteOne({ _id: requestId });
 
-        res.status(200).end(); // Or 204 No Content
+        res.status(200).end();
     } catch (err) {
         console.error("Error deleting student request:", err);
         res.status(500).end();
     }
 });
 
-// Add PUT route for editing a specific student request
-router.put("/:id", async (req: AuthenticatedRequest, res) => { // Use AuthenticatedRequest type
+router.put("/:id", async (req: AuthenticatedRequest, res) => { 
     try {
-        // Ensure req.user exists and has an _id
         if (!req.user || !req.user.sub) {
             res.status(401).send("User not authenticated.");
             return;
@@ -134,15 +111,13 @@ router.put("/:id", async (req: AuthenticatedRequest, res) => { // Use Authentica
         const requestId = req.params.id;
         const updatedData = req.body;
 
-        // Find the request and check if the logged-in user is the creator
         const studentRequest = await StudentRequest.findOneAndUpdate(
             { _id: requestId, createdBy: req.user.sub },
             updatedData,
-            { new: true } // Return the updated document
+            { new: true } 
         );
 
         if (!studentRequest) {
-             // If not found or user is not the creator, return 404 or 403
             res.status(404).send("Student request not found or you do not have permission to edit it.");
             return;
         }

@@ -1,4 +1,3 @@
-// filepath: c:\INT - Full Stack\REACT - מודול 4\Tutors-Online\React-service\src\models\teacherRequest.ts
 import mongoose, { Schema, model } from "mongoose";
 
 const schema = new Schema({
@@ -6,7 +5,7 @@ const schema = new Schema({
         type: String,
         required: true,
     },
-    experience: { // Changed from level to experience
+    experience: { 
         type: String,
     },
     name:{

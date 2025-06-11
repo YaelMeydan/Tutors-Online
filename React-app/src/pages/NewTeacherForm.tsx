@@ -1,5 +1,4 @@
-// filepath: c:\INT - Full Stack\REACT - מודול 4\Tutors-Online\React-app\src\pages\NewTeacherForm.tsx
-import { type TeacherRequest} from "../models/teacherRequest"; // Import TeacherRequest type
+import { type TeacherRequest} from "../models/teacherRequest"; 
 import { Main } from "../components/Main";
 import { Input } from "../components/Input";
 import { PrimaryButton } from "../components/PrimaryButton";
@@ -8,23 +7,23 @@ import { useNavigate } from "react-router";
 
 export function NewTeacherForm() {
     const navigate = useNavigate();
-    const teacherRequest ={} as TeacherRequest; // Use TeacherRequest type
+    const teacherRequest ={} as TeacherRequest; 
 
     async function Submit(e: React.FormEvent) {
         e.preventDefault();
         const formEntries = Object.fromEntries(new FormData(e.currentTarget as HTMLFormElement));
         teacherRequest.name = formEntries.name as string;
         teacherRequest.subject = formEntries.subject as string;
-        teacherRequest.experience = formEntries.experience as string; // Changed from level to experience
+        teacherRequest.experience = formEntries.experience as string; 
         teacherRequest.contact = formEntries.contact as string;
 
         try {
-            await apiClient.post("/teachers", teacherRequest); // Post to /teachers endpoint
+            await apiClient.post("/teachers", teacherRequest); 
             alert("Your teacher request has been submitted successfully!");
-            navigate("/teachers-posts"); // Navigate to teachers posts page
+            navigate("/teachers-posts"); 
         } catch (err) {
             console.error(err);
-            alert("Failed to submit teacher request."); // Add error alert
+            alert("Failed to submit teacher request.");
         }
     }
 
@@ -46,9 +45,9 @@ export function NewTeacherForm() {
 
                 />
                 <Input
-                    id="experience" // Changed from level to experience
-                    label="Experience (optional)" // Changed label
-                    name="experience" // Changed name
+                    id="experience"
+                    label="Experience (optional)"
+                    name="experience"
                 />
                 <Input
                     id="contact"

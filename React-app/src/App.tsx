@@ -2,8 +2,6 @@ import { Link, Outlet, useNavigate } from "react-router";
 import { clearToken, getToken } from "./models/apiClient";
 import { PrimaryButton } from "./components/PrimaryButton";
 
-//import styles from "./App.module.scss";
-
 export function App() {
   return (
     <>
@@ -16,11 +14,11 @@ export function App() {
 export function Nav() {
   const navigate = useNavigate();
   return(
-    <article  >
+    <article>
       <nav>
         <menu>
           <PrimaryButton><Link to={"/students-posts"}>Students Posts Page</Link></PrimaryButton>
-          <PrimaryButton><Link to={"/teachers-posts"}>Teachers Posts Page</Link></PrimaryButton> {/* Added Teachers link */}
+          <PrimaryButton><Link to={"/teachers-posts"}>Teachers Posts Page</Link></PrimaryButton>
         </menu>
       </nav>
       <article>

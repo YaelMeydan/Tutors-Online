@@ -1,5 +1,4 @@
-// filepath: c:\INT - Full Stack\REACT - מודול 4\Tutors-Online\React-app\src\pages\EditTeacherForm.tsx
-import { type TeacherRequest} from "../models/teacherRequest"; // Import TeacherRequest type
+import { type TeacherRequest} from "../models/teacherRequest"; 
 import { Main } from "../components/Main";
 import { Input } from "../components/Input";
 import { PrimaryButton } from "../components/PrimaryButton";
@@ -9,11 +8,9 @@ import { useState } from "react";
 
 export function EditTeacherForm() {
     const navigate = useNavigate();
-    // Get the initial data from the loader
-    const initialTeacherRequest = useLoaderData() as TeacherRequest; // Use TeacherRequest type
+    const initialTeacherRequest = useLoaderData() as TeacherRequest; 
 
-    // Use state to manage the form data
-    const [formData, setFormData] = useState<TeacherRequest>(initialTeacherRequest); // Use TeacherRequest type
+    const [formData, setFormData] = useState<TeacherRequest>(initialTeacherRequest); 
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -27,10 +24,9 @@ export function EditTeacherForm() {
         e.preventDefault();
 
         try {
-            // Send a PUT request to update the teacher request
-            await apiClient.put(`/teachers/${formData._id}`, formData); // Put to /teachers endpoint
+            await apiClient.put(`/teachers/${formData._id}`, formData);
             alert("Your teacher request has been updated successfully!");
-            navigate("/teachers-posts"); // Navigate back to the teachers posts page
+            navigate("/teachers-posts");
         } catch (err) {
             console.error("Error updating teacher request:", err);
             alert("Failed to update teacher request.");
@@ -58,10 +54,10 @@ export function EditTeacherForm() {
                         onChange={handleInputChange}
                     />
                     <Input
-                        id="experience" // Changed id
-                        label="Experience (optional)" // Changed label
-                        name="experience" // Changed name
-                        value={formData.experience || ''} // Bind value to state (handle optional)
+                        id="experience" 
+                        label="Experience" 
+                        name="experience"
+                        value={formData.experience || ''} 
                         onChange={handleInputChange}
                     />
                     <Input

@@ -1,4 +1,3 @@
-//import { useState } from "react";
 import { type StudentRequest} from "../models/studentRequest";
 import { Main } from "../components/Main";
 import { Input } from "../components/Input";
@@ -46,7 +45,7 @@ export function NewStudentForm() {
                 />
                 <Input
                     id="level"
-                    label="Level (optional)"
+                    label="Level"
                     name="level"
                 />    
                 <Input

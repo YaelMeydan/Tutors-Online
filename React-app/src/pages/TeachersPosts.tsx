@@ -1,18 +1,16 @@
-// filepath: c:\INT - Full Stack\REACT - מודול 4\Tutors-Online\React-app\src\pages\TeachersPosts.tsx
 import { Link, useLoaderData, useNavigate } from "react-router";
 import { Main } from "../components/Main";
-import { timestampFormater, type  AllTeacherPosts, type TeacherRequest } from "../models/teacherRequest"; // , TeachersPosts
+import { timestampFormater, type  AllTeacherPosts, type TeacherRequest } from "../models/teacherRequest";
 import { Input } from "../components/Input";
 import { PrimaryButton } from "../components/PrimaryButton";
 import { apiClient, getCurrentUserId } from "../models/apiClient";
 import { useState, useEffect } from "react";
 
 export function ShowAllTeachersPosts(){
-    // Get initial data from the loader
-    const initialTeachersPosts = useLoaderData<AllTeacherPosts>(); // Use AllTeacherPosts type
 
-    // Use state to manage the posts currently being displayed
-    const [displayedPosts, setDisplayedPosts] = useState<AllTeacherPosts>(initialTeachersPosts); // Use AllTeacherPosts type
+    const initialTeachersPosts = useLoaderData<AllTeacherPosts>(); 
+
+    const [displayedPosts, setDisplayedPosts] = useState<AllTeacherPosts>(initialTeachersPosts); 
 
      const handleSearch = async () => {
         try {
@@ -20,19 +18,16 @@ export function ShowAllTeachersPosts(){
             const subject = subjectInput?.value;
 
             if (!subject) {
-                // If search input is empty, show all initial posts
                 setDisplayedPosts(initialTeachersPosts);
                 return;
             }
 
-            // Make the API call to filter by subject for teachers
-            const res = await apiClient.get<AllTeacherPosts>((`/teachers`), { // Call /teachers endpoint
+            const res = await apiClient.get<AllTeacherPosts>((`/teachers`), { 
                 params: {
                     subject: subject,
                 },
             });
 
-            // Update the state with the filtered data
             setDisplayedPosts(res.data);
 
         } catch (err) {
@@ -41,7 +36,7 @@ export function ShowAllTeachersPosts(){
         }
     };
 
-    // Optional: Reset displayed posts if initial data changes (e.g., on route change)
+
     useEffect(() => {
         setDisplayedPosts(initialTeachersPosts);
     }, [initialTeachersPosts]);
@@ -50,24 +45,22 @@ export function ShowAllTeachersPosts(){
     return(
         <Main>
             <h1>All Teachers Posts</h1>
-            <div><Link to ={"/new-teacher-form"}>Add a new teacher request ➕</Link></div> {/* Link to new teacher form */}
+            <div><Link to ={"/new-teacher-form"}>Add a new teacher request ➕</Link></div>
             <div>
                 <Input id="search" type="search" name="search" label="Type the required subject:"/>
                 <PrimaryButton onClick={handleSearch}>Search🔎</PrimaryButton>
             </div>
-            {/* Render the list using the state variable that gets updated by the search */}
-            {/* Pass the current user ID to AllTeacherPosts */}
-            <AllTeacherPosts teachersPosts={displayedPosts} currentUserId={getCurrentUserId()}/> {/* Use AllTeacherPosts component */}
+            <AllTeacherPosts teachersPosts={displayedPosts} currentUserId={getCurrentUserId()}/>
         </Main>
     );
 }
 
 type AllTeacherPostsProps = {
-    teachersPosts: AllTeacherPosts; // Use AllTeacherPosts type
+    teachersPosts: AllTeacherPosts; 
     currentUserId: string | null;
 };
 
-function AllTeacherPosts({teachersPosts, currentUserId}: AllTeacherPostsProps) { // Receive teachersPosts
+function AllTeacherPosts({teachersPosts, currentUserId}: AllTeacherPostsProps) { 
     if (!teachersPosts || teachersPosts.length === 0) {
         return (<p>No teacher requests found.</p>);
     }
@@ -77,19 +70,18 @@ function AllTeacherPosts({teachersPosts, currentUserId}: AllTeacherPostsProps) {
                 .sort((a, b) => new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf())
                 .map((teacherRequest) =>
                     <li key={teacherRequest._id}>
-                        {/* Pass currentUserId to TeacherPost */}
-                        <TeacherPost {...teacherRequest} currentUserId={currentUserId} /> {/* Use TeacherPost component */}
+                        <TeacherPost {...teacherRequest} currentUserId={currentUserId} /> 
                     </li>
                 )}
         </ul>
     );
 }
 
-type TeacherPostProps =  TeacherRequest & { // Use TeacherRequest type
+type TeacherPostProps =  TeacherRequest & { 
     currentUserId: string | null;
 };
 
-export function TeacherPost({ _id, createdAt, name, experience, subject, contact, createdBy, currentUserId } :TeacherPostProps) { // Receive experience
+export function TeacherPost({ _id, createdAt, name, experience, subject, contact, createdBy, currentUserId } :TeacherPostProps) { 
      const timestamp = new Date(createdAt);
      const navigate = useNavigate();
 
@@ -98,7 +90,7 @@ export function TeacherPost({ _id, createdAt, name, experience, subject, contact
      const handleDelete = async () => {
          if (window.confirm("Are you sure you want to delete this teacher request?")) {
              try {
-                 await apiClient.delete(`/teachers/${_id}`); // Delete from /teachers endpoint
+                 await apiClient.delete(`/teachers/${_id}`);
                  alert("Teacher request deleted successfully!");
                  navigate(0);
              } catch (error) {
@@ -117,7 +109,7 @@ export function TeacherPost({ _id, createdAt, name, experience, subject, contact
      return(
         <article>
             <h2>{subject}</h2>
-            <p>{experience}</p> {/* Display experience */}
+            <p>{experience}</p>
             <time dateTime={timestamp.toString()}>{timestampFormater.format(timestamp)}</time>
             <p>{name}</p>
             <p>{contact}</p>

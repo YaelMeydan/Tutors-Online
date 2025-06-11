@@ -1,4 +1,3 @@
-
 import { type StudentRequest} from "../models/studentRequest";
 import { Main } from "../components/Main";
 import { Input } from "../components/Input";
@@ -45,23 +44,23 @@ export function EditStudentForm() {
                         label="Name"
                         name="name"
                         required
-                        value={formData.name} // Bind value to state
-                        onChange={handleInputChange} // Handle input changes
+                        value={formData.name}
+                        onChange={handleInputChange}
                     />
                     <Input
                         id="subject"
                         label="Subject"
                         name="subject"
                         required
-                        value={formData.subject} // Bind value to state
-                        onChange={handleInputChange} // Handle input changes
+                        value={formData.subject} 
+                        onChange={handleInputChange} 
                     />
                     <Input
                         id="level"
-                        label="Level (optional)"
+                        label="Level "
                         name="level"
-                        value={formData.level || ''} // Bind value to state (handle optional)
-                        onChange={handleInputChange} // Handle input changes
+                        value={formData.level || ''} 
+                        onChange={handleInputChange} 
                     />
                     <Input
                         id="contact"
