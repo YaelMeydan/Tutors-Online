@@ -19,7 +19,7 @@ export function NewStudentForm() {
         studentRequest.contact = formEntries.contact as string;
 
         try {
-            await apiClient.post("/students", studentRequest as StudentRequest);
+            await apiClient.post("/students", studentRequest);
             alert("Your request has been submitted successfully!");
             navigate("/students-posts");
         } catch (err) {
