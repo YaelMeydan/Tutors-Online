@@ -17,7 +17,9 @@ router.post("/", async (req, res) => {
     }
 });
 
-router.get("/", async (req, res) => { // Changed _ to req to access query parameters
+router.get("/", async (req, res) => {// Changed _ to req to access query parameters
+    console.log("GET /students route called"); 
+    
     try {
         const subject = req.query.subject as string; // Get the subject from query parameters
         console.log("Received query parameter 'subject':", subject); // Log the received subject
