@@ -109,7 +109,7 @@ export function TeacherPost({ _id, createdAt, name, experience, subject, contact
      };
 
      const handleEdit = () => {
-         // Navigate to an edit page/form for teachers
+         
          navigate(`/teachers/${_id}/edit`);
      };
 

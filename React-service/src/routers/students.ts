@@ -1,7 +1,6 @@
 import { Router } from "express";
 import { StudentRequest } from "../models/studentRequest";
-// Assuming your auth middleware adds user info to req.user
-import { AuthenticatedRequest } from "../auth"; // You might need to define this type
+import { AuthenticatedRequest } from "../auth";
 
 export const router = Router();
 
@@ -59,6 +58,38 @@ router.get("/", async (req, res) => {// Changed _ to req to access query paramet
     } catch (err) {
         console.error("Error in GET /students route:", err); // Log specific error location
         res.status(500).end(); // Added .end() for consistency
+    }
+});
+
+// Add GET route for a specific student request by ID
+router.get("/:id", async (req: AuthenticatedRequest, res) => {
+    try {
+        // Ensure req.user exists and has a 'sub' property
+        if (!req.user || !req.user.sub) {
+            res.status(401).send("User not authenticated.");
+            return;
+        }
+
+        const requestId = req.params.id;
+
+        // Find the request by ID and ensure the logged-in user is the creator
+        const studentRequest = await StudentRequest.findOne({ _id: requestId, createdBy: req.user.sub });
+
+        if (!studentRequest) {
+            // If not found or user is not the creator, return 404 or 403
+            res.status(404).send("Student request not found or you do not have permission to view/edit it.");
+            return;
+        }
+
+        res.status(200).json(studentRequest);
+    } catch (err) {
+        console.error("Error in GET /students/:id route:", err);
+        // Check if the error is a CastError (e.g., invalid ObjectId format)
+        if (err instanceof Error && err.name === 'CastError') {
+             res.status(400).send("Invalid student request ID format.");
+        } else {
+            res.status(500).end();
+        }
     }
 });
 

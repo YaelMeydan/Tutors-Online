@@ -60,6 +60,38 @@ router.get("/", async (req: AuthenticatedRequest, res) => {
     }
 });
 
+// Add GET route for a specific teacher request by ID
+router.get("/:id", async (req: AuthenticatedRequest, res) => {
+    try {
+        // Ensure req.user exists and has a 'sub' property
+        if (!req.user || !req.user.sub) {
+            res.status(401).send("User not authenticated.");
+            return;
+        }
+
+        const requestId = req.params.id;
+
+        // Find the request by ID and ensure the logged-in user is the creator
+        const teacherRequest = await TeacherRequest.findOne({ _id: requestId, createdBy: req.user.sub });
+
+        if (!teacherRequest) {
+            // If not found or user is not the creator, return 404 or 403
+            res.status(404).send("Teacher request not found or you do not have permission to view/edit it.");
+            return;
+        }
+
+        res.status(200).json(teacherRequest);
+    } catch (err) {
+        console.error("Error in GET /teachers/:id route:", err);
+        // Check if the error is a CastError (e.g., invalid ObjectId format)
+        if (err instanceof Error && err.name === 'CastError') {
+             res.status(400).send("Invalid teacher request ID format.");
+        } else {
+            res.status(500).end();
+        }
+    }
+});
+
 // DELETE route for a specific teacher request
 router.delete("/:id", async (req: AuthenticatedRequest, res) => {
     try {
