@@ -20,29 +20,32 @@ router.post("/", async (req, res) => {
 router.get("/", async (req, res) => { // Changed _ to req to access query parameters
     try {
         const subject = req.query.subject as string; // Get the subject from query parameters
+        console.log("Received query parameter 'subject':", subject); // Log the received subject
         let studentsPosts;
 
         if (subject) {
-            // If subject query parameter exists, filter by subject
-            studentsPosts = await StudentRequest.find({ subject: subject });
+            console.log("Filtering by subject:", subject); // Log when filtering is applied
+            // If subject query parameter exists, filter by subject using case-insensitive regex
+            studentsPosts = await StudentRequest.find({ subject: new RegExp(subject, 'i') });
         } else {
+            console.log("No subject query parameter, returning all students."); // Log when returning all
             // Otherwise, return all students
             studentsPosts = await StudentRequest.find();
         }
 
         if (!studentsPosts || studentsPosts.length === 0) {
+             console.log("No student posts found for the query."); // Log if no results
              // It's better to return an empty array with 200 OK for no results
              // rather than 404, as the request itself was successful.
              res.status(200).json([]);
              return;
         }
 
-
+        console.log(`Found ${studentsPosts.length} student posts.`); // Log the number of results
         res.json(studentsPosts);
     } catch (err) {
-        console.error(err);
-        res.status(500);
-        res.end();
+        console.error("Error in GET /students route:", err); // Log specific error location
+        res.status(500).end(); // Added .end() for consistency
     }
 });
 

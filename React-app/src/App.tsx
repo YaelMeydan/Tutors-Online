@@ -19,7 +19,7 @@ export function Nav() {
     <article  >
       <nav>
         <menu>
-          <li><Link to={"/students-posts"}>Students Posts</Link></li> 
+          <PrimaryButton><Link to={"/students-posts"}>Students Posts Page</Link></PrimaryButton>
         </menu>
       </nav>
       <article>
