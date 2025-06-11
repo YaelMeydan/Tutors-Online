@@ -10,7 +10,7 @@ const schema = new Schema({
         type: String,
         select: false,
         set(newPassword: string) {
-            if (!(this instanceof Document) || this.isNew) {
+            if (!(this instanceof Document)) {
                 throw new Error();
             }
 
