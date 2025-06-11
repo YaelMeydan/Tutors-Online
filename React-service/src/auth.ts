@@ -49,7 +49,7 @@ function createToken(userId: string, userName: string ) {
 
 const register: RequestHandler = async (req, res) => {
     try {
-        const { email, fullName, password } = req.body;
+        const { _id, email, fullName, password } = req.body;
 
         if (!email) {
             res.status(400).send("email is required"); // Use send() for body
@@ -64,7 +64,7 @@ const register: RequestHandler = async (req, res) => {
         }
 
         // Assuming User.create handles password hashing internally or you do it here
-        const newUser = await User.create({ email, fullName, password }); // Include password here if your model handles hashing
+        const newUser = await User.create({ email, fullName, password }) as unknown as typeof User.prototype; // Explicitly type newUser as a User instance
 
         // If your model requires setting password separately after creation:
         // newUser.password = password;
@@ -96,7 +96,7 @@ const login: RequestHandler = async (req, res) => {
         }
 
         // Select the password field explicitly if it's excluded by default
-        const user = await User.findOne({ email }).select('+password'); // Assuming your schema excludes password by default
+        const user = await User.findOne({ email }).select('+password') as { _id: any, fullName: string, isSamePassword: (password: string) => boolean }; // Type assertion
 
         if (!user) {
             res.status(401).send("Invalid credentials"); // Provide a generic error message
