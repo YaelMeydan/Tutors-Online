@@ -16,13 +16,6 @@ export async function StudentsPosts(): Promise<AllStudentPosts> {
    return res.data;
 }
 
-export type StudentsBySubject = StudentRequest[];
-export async function StudentsPostsBySubject(subject: string): Promise<StudentsBySubject> {
-    const res = await apiClient.get(`/students/${subject}`);
-
-    return res.data;
-}
-
 export type NewStudentRequest = StudentRequest[];
 export async function NewStudentPost(): Promise<NewStudentRequest> {
     const res = await apiClient.get("/students")

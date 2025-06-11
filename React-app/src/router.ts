@@ -6,10 +6,11 @@ import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
 import { NotFound } from "./pages/NotFound";
 import { getToken } from "./models/apiClient";
-import { StudentsPosts , StudentsPostsBySubject, NewStudentPost} from "./models/studentRequest"; 
+import { StudentsPosts , NewStudentPost} from "./models/studentRequest"; 
 import { NewStudentForm } from "./pages/NewStudentForm";
 import { ShowAllStudentsPosts } from "./pages/StudentsPosts";
 import { HandleAuthorizationError } from "./HandleAuthorizationError";
+
 
 export const router = createBrowserRouter([
     {
@@ -39,13 +40,6 @@ export const router = createBrowserRouter([
                 Component: ShowAllStudentsPosts,
                 loader() {
                     return StudentsPosts();
-                },
-            },
-            {
-                path: "/students-posts/:subject",
-                Component: ShowAllStudentsPosts ,
-                loader({ params }) {
-                   return StudentsPostsBySubject(params.subject as string);
                 },
             },
              {

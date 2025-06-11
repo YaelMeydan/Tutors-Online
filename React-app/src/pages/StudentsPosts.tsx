@@ -13,7 +13,7 @@ export function ShowAllStudentsPosts(){
     // Use state to manage the posts currently being displayed
     const [displayedPosts, setDisplayedPosts] = useState<AllStudentPosts>(initialStudentsPosts);
 
-    const handleSearch = async () => { // Renamed for clarity
+     const handleSearch = async () => { // Renamed for clarity
         try {
             const subjectInput = document.querySelector<HTMLInputElement>("#search");
             const subject = subjectInput?.value;
