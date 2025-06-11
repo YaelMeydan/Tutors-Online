@@ -20,6 +20,7 @@ export function Nav() {
       <nav>
         <menu>
           <PrimaryButton><Link to={"/students-posts"}>Students Posts Page</Link></PrimaryButton>
+          <PrimaryButton><Link to={"/teachers-posts"}>Teachers Posts Page</Link></PrimaryButton> {/* Added Teachers link */}
         </menu>
       </nav>
       <article>
